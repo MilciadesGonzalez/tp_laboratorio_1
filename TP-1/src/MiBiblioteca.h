@@ -30,7 +30,7 @@ int IngresoNumero1(int num1);
 int IngresoNumero2(int num2);
 
 /// \fn void Calculos(int, int, int*, int*, float*, int*, int*, int*)
-/// \brief Recibe los 2 operando y genera los todos los calculos, los guarda mediante punteros.
+/// \brief Recibe los 2 operando y genera los todos los calculos, los guarda mediante pasaje de valor por referencia.
 /// \param op1
 /// \param op2
 /// \param suma
