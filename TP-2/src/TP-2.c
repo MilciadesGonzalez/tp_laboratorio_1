@@ -5,8 +5,7 @@
  Version     :
 
  ============================================================================
- */
-
+*/
 #include <stdio.h>
 #include <stdlib.h>
 #include <string.h>
@@ -19,8 +18,10 @@ int main(void) {
 	setbuf(stdout,NULL);
 
 	int opcion;
+	int opcionSubMenu;
 	Employee nominaEmpleados[LEN];
 	int contId = 0;
+	int id;
 
 	if(initEmployees(nominaEmpleados, LEN)==-1)
 	{
@@ -42,7 +43,20 @@ int main(void) {
 			case 2:
 					if(validarArray(nominaEmpleados, LEN)==0)
 					{
-
+						printEmployees(nominaEmpleados, LEN);
+						id = pedirEntero("Ingrese ID del empleado a modificar: ");
+						if(findEmployeeById(nominaEmpleados, LEN, id)==0)
+						{
+							opcionSubMenu = subMenus();
+							if(modificarEmpleado(nominaEmpleados, LEN, opcionSubMenu, id)==-1)
+							{
+								printf("No se modificó empleado.\n");
+							}
+						}
+						else
+						{
+							printf("No se encontró empleado.\n");
+						}
 					}
 					else
 					{
@@ -53,7 +67,23 @@ int main(void) {
 			case 3:
 					if(validarArray(nominaEmpleados, LEN)==0)
 					{
-
+						printEmployees(nominaEmpleados, LEN);
+						id = pedirEntero("Ingrese ID del empleado a eliminar: ");
+						if(findEmployeeById(nominaEmpleados, LEN, id)==0)
+						{
+							if(removeEmployee(nominaEmpleados, LEN, id)==0)
+							{
+								printf("Empleado eliminado exitosamente.\n");
+							}
+							else
+							{
+								printf("No se eliminó empleado.\n");
+							}
+						}
+						else
+						{
+							printf("No se encontró empleado.\n");
+						}
 					}
 					else
 					{
@@ -77,6 +107,7 @@ int main(void) {
 			break;
 			default:
 					printf("Opcion invalida.");
+					printf("\n");
 			break;
 		}
 

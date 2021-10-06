@@ -51,12 +51,31 @@ int addEmployee(Employee* list, int len, int cont)//, int id, char name[],char
 
 int findEmployeeById(Employee* list, int len,int id)
 {
-	return NULL;
+	int retorno;
+	retorno = -1;
+	for(int i=0; i<len; i++)
+	{
+		if(list[i].isEmpty==FALSE && list[i].id==id)
+		{
+			retorno = 0;
+		}
+	}
+	return retorno;
 }
 
 int removeEmployee(Employee* list, int len, int id)
 {
-	return -1;
+	int flag;
+	flag = -1;
+	for(int i=0; i<len; i++)
+	{
+		if(list[i].id==id)
+		{
+			initEmployees(list, len);
+			flag = 0;
+		}
+	}
+	return flag;
 }
 
 int sortEmployees(Employee* list, int len, int order)
@@ -95,5 +114,51 @@ int validarArray(Employee* list, int len)
 		}
 	}
 
+	return flag;
+}
+int subMenus()
+{
+	int op;
+
+	printf("1. Modificar Nombre.\n");
+	printf("2. Modificar Apellido.\n");
+	printf("3. Modificar Salario.\n");
+	printf("4. Modificar Sector.\n");
+	printf("\n");
+	printf("Ingrese opcion: ");
+	scanf("%d", &op);
+	printf("\n");
+
+	return op;
+}
+int modificarEmpleado(Employee* list, int len, int op, int opId)
+{
+	int flag;
+	flag = -1;
+	for(int i=0; i<len; i++)
+	{
+		if(list[i].id==opId)
+		{
+			switch (op)
+			{
+				case 1:
+						getString("Ingrese nuevo nombre: ", list[i].name, 51);
+				break;
+				case 2:
+						getString("Ingrese nuevo Apellido: ", list[i].lastName, 51);
+				break;
+				case 3:
+						list[i].salary = pedirFlotante("Ingrese nuevo salario: ");
+				break;
+				case 4:
+						list[i].sector = pedirEntero("Ingrese nuevo sector: ");
+				break;
+				default:
+						printf("Opcion invalida.");
+				break;
+			}
+			flag = 0;
+		}
+	}
 	return flag;
 }

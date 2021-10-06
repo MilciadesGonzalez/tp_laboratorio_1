@@ -92,4 +92,11 @@ void mostrarUnEmpleado(Employee list);
 
 int validarArray(Employee* list, int len);
 
+int subMenus();
+
+int modificarEmpleado(Employee* list, int len, int op, int opId);
+
+
+
+
 #endif /* ARRAYEMPLOYEES_H_ */
