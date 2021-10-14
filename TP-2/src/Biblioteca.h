@@ -36,5 +36,6 @@ int ordenarPorDescripcion(eProducto listaProducto[], int tam);
 int subMenu();
 int productoMayorPrecio(eProducto listaProductos[], int tam, float* precioMayor);
 int mostrarProductoPorPrecio(eProducto listaProductos[], int tam, float precio);
+int validarEntero(char numero[]);
 
 #endif /* BIBLIOTECA_H_ */

@@ -10,19 +10,26 @@
 
 int MenuPrincipal()
 {
-	int op;
+	char op[5];
+	int opcion;
 
-	printf("1. ALTA Empleado.\n");
-	printf("2. MODIFICAR Empleado.\n");
-	printf("3. BAJA Empleado.\n");
-	printf("4. INFORMAR.\n");
-	printf("5. Salir\n");
-	printf("\n");
-	printf("Ingrese una opcion: ");
-	scanf("%d", &op);
+	do{
+		printf("1. ALTA Empleado.\n");
+		printf("2. MODIFICAR Empleado.\n");
+		printf("3. BAJA Empleado.\n");
+		printf("4. INFORMAR.\n");
+		printf("5. Salir\n");
+		printf("\n");
+		printf("Ingrese una opcion: ");
+		scanf("%s", op);
+		opcion = validarEntero(op);
+
+	}while(op==0);
+
+	opcion = atoi(op);
 	printf("\n");
 
-	return op;
+	return opcion;
 }
 void Inicializar(eProducto listaProductos[], int tam)
 {
@@ -238,6 +245,20 @@ int mostrarProductoPorPrecio(eProducto listaProductos[], int tam, float precio)
 		{
 			mostrarUnProducto(listaProductos[i]);
 			flag = 1;
+		}
+	}
+	return flag;
+}
+int validarEntero(char numero[])
+{
+	int flag;
+	flag = -1;
+	for(int i=0; i<strlen(numero);i++)
+	{
+		if(!(isdigit(numero[i])))
+		{
+			printf("\nsCampo numerico solamente.");
+			flag = 0;
 		}
 	}
 	return flag;

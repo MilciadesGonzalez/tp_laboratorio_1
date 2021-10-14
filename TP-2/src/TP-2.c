@@ -106,7 +106,7 @@ int main(void) {
 					printf("Gracias por utilizar la app.");
 			break;
 			default:
-					printf("Opcion invalida.");
+					printf("Opcion invalida.\n");
 					printf("\n");
 			break;
 		}
