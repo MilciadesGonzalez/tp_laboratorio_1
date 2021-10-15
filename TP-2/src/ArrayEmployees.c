@@ -5,7 +5,7 @@
  *      Author: Milciades Gonzalez
  */
 #include "ArrayEmployees.h"
-#include "Biblioteca.h"
+#include "inputs.h"
 
 #define TRUE 0
 #define FALSE 1
@@ -17,31 +17,34 @@ int initEmployees(Employee* list, int len)
 	for(int i=0; i<len; i++)
 	{
 		list[i].isEmpty=TRUE;
-		list[i].id=0;
-		list[i].salary=0;
-		list[i].sector=0;
-		strcpy(list[i].lastName,"");
-		strcpy(list[i].name,"");
+//		list[i].id=0;
+//		list[i].salary=0;
+//		list[i].sector=0;
+//		strcpy(list[i].lastName,"");
+//		strcpy(list[i].name,"");
 		flag = 0;
 	}
 	return flag;
 }
 
-int addEmployee(Employee* list, int len, int cont)//, int id, char name[],char
-//lastName[],float salary,int sector)
+int addEmployee(Employee* list, int len, int id)
 {
 	int flag;
+	int opSector;
 	flag = -1;
 	for(int i=0; i<len; i++)
 	{
 		if(list[i].isEmpty==TRUE)
 		{
-			list[i].id = cont;
-			getString("Ingrese Nombre del empleado: ", list[i].name, 51);
-			getString("Ingrese Apellido del empleado: ", list[i].lastName, 51);
-			list[i].salary = pedirFlotante("Ingrese salario del empleado: ");
-			list[i].sector = pedirEntero("Ingrese sector del empleado: ");
+			list[i].id = id;
+			getString("Ingrese Nombre del empleado: ", list[i].name);
+			getString("Ingrese Apellido del empleado: ", list[i].lastName);
+			list[i].salary = getFloat("Ingrese salario del empleado: ");
+			printf("\nSelecione sector:\n");
+			opSector = menuSector();
+			list[i].sector = opSector;
  			list[i].isEmpty = FALSE;
+ 			printf("\nEmpleado agregado correctamente.\n");
  			flag = 0;
 			break;
 		}
@@ -51,36 +54,64 @@ int addEmployee(Employee* list, int len, int cont)//, int id, char name[],char
 
 int findEmployeeById(Employee* list, int len,int id)
 {
-	int retorno;
-	retorno = -1;
-	for(int i=0; i<len; i++)
-	{
-		if(list[i].isEmpty==FALSE && list[i].id==id)
-		{
-			retorno = 0;
-		}
-	}
-	return retorno;
-}
-
-int removeEmployee(Employee* list, int len, int id)
-{
 	int flag;
 	flag = -1;
 	for(int i=0; i<len; i++)
 	{
-		if(list[i].id==id)
+		if(list[i].isEmpty==FALSE && list[i].id==id)
 		{
-			initEmployees(list, len);
 			flag = 0;
 		}
 	}
 	return flag;
 }
 
-int sortEmployees(Employee* list, int len, int order)
+int removeEmployee(Employee* list, int len)
 {
-	return 0;
+	int flag;
+	int id;
+	flag = -1;
+
+	if(validarEjecucion(list, len)==0)
+	{
+		printEmployees(list, len);
+		id = getInt("Ingrese id del empleado a eliminar: ");
+
+		for(int i=0; i<len; i++)
+		{
+			if(list[i].isEmpty==FALSE && list[i].id==id)
+			{
+				list[i].isEmpty = TRUE;
+				printf("\nEmpleado eliminado correctamente.\n");
+				flag = 0;
+				break;
+			}
+		}
+	}
+	return flag;
+}
+
+int sortEmployees(Employee* list, int len)
+{
+	int flag;
+	Employee aux;
+	flag = -1;
+
+	for(int i=0; i<len-1; i++)
+	{
+		for(int j=i+1; j<len; j++)
+		{
+			if(strcmp(list[i].lastName, list[j].lastName)>0)
+			{
+				aux = list[i];
+				list[i] = list[j];
+				list[j] = aux;
+				flag = 0;
+			}
+		}
+	}
+
+	return flag;
 }
 
 int printEmployees(Employee* list, int length)
@@ -90,75 +121,162 @@ int printEmployees(Employee* list, int length)
 	printf("ID \t Nombre \t Apellido \t Salario \t Sector\n");
 	for(int i=0; i<length; i++)
 	{
-		if(list[i].id != 0)
+		if(list[i].isEmpty == FALSE)
 		{
+			validarSector(list, length);
 			mostrarUnEmpleado(list[i]);
 			flag = 0;
 		}
 	}
 	return flag;
 }
-void mostrarUnEmpleado(Employee list)
-{
-	printf("%-6d  %-15s  %-13s  %10.2f  %10d\n",list.id,list.name,list.lastName,list.salary,list.sector);
-}
-int validarArray(Employee* list, int len)
+int modificarEmpleado(Employee* list, int len)
 {
 	int flag;
-	flag = -1;
-	for(int i=0; i<len; i++)
-	{
-		if(list[i].id != 0)
-		{
-			flag = 0;
-		}
-	}
-
-	return flag;
-}
-int subMenus()
-{
+	int id;
+	int opMod;
 	int op;
-
-	printf("1. Modificar Nombre.\n");
-	printf("2. Modificar Apellido.\n");
-	printf("3. Modificar Salario.\n");
-	printf("4. Modificar Sector.\n");
-	printf("\n");
-	printf("Ingrese opcion: ");
-	scanf("%d", &op);
-	printf("\n");
-
-	return op;
-}
-int modificarEmpleado(Employee* list, int len, int op, int opId)
-{
-	int flag;
 	flag = -1;
-	for(int i=0; i<len; i++)
+
+	if(validarEjecucion(list, len)==0)
 	{
-		if(list[i].id==opId)
+		printf("\nSelecione opcion a modificar:\n");
+		opMod = menuModificar();
+
+		printEmployees(list, len);
+		id = getInt("\nIngrese id del empleado a modificar: ");
+		for(int i=0; i<len; i++)
 		{
-			switch (op)
+			if(list[i].isEmpty==FALSE && list[i].id==id)
 			{
-				case 1:
-						getString("Ingrese nuevo nombre: ", list[i].name, 51);
-				break;
-				case 2:
-						getString("Ingrese nuevo Apellido: ", list[i].lastName, 51);
-				break;
-				case 3:
-						list[i].salary = pedirFlotante("Ingrese nuevo salario: ");
-				break;
-				case 4:
-						list[i].sector = pedirEntero("Ingrese nuevo sector: ");
-				break;
-				default:
-						printf("Opcion invalida.");
+				switch (opMod)
+				{
+					case 1:
+							getString("Ingrese nuevo Nombre: ", list[i].name);
+					break;
+					case 2:
+							getString("Ingrese Apellido del empleado: ", list[i].lastName);
+					break;
+					case 3:
+							list[i].salary = getFloat("Ingrese salario del empleado: ");
+					break;
+					case 4:
+							printf("\nSelecione sector:\n");
+							op = menuSector();
+							list[i].sector = op;
+					break;
+				}
+				printf("\nEmpleado modificado correctamente.\n");
+				flag = 0;
 				break;
 			}
+		}
+	}
+	return flag;
+}
+void mostrarUnEmpleado(Employee unEmpleado)
+{
+	printf("%-8d %-15s %-15s %-8.2f \t %-15s\n", unEmpleado.id,
+										   unEmpleado.name,
+										   unEmpleado.lastName,
+										   unEmpleado.salary,
+										   unEmpleado.descripcionSector);
+}
+int validarSector(Employee* list, int len)
+{
+	int flag;
+	flag = -1;
+
+	for(int i=0; i<len; i++)
+	{
+		if(list[i].sector==1)
+		{
+			strcpy(list[i].descripcionSector, "Administración");
+			flag = 0;
+		}
+		else if(list[i].sector==2)
+		{
+			strcpy(list[i].descripcionSector, "Expedición");
+			flag = 0;
+		}
+		else if(list[i].sector==3)
+		{
+			strcpy(list[i].descripcionSector, "Maestranza");
+			flag = 0;
+		}
+		else if(list[i].sector==4)
+		{
+			strcpy(list[i].descripcionSector, "Otro");
 			flag = 0;
 		}
 	}
 	return flag;
+}
+int calculos(Employee* list, int len, float* promedio, float* acumulador)
+{
+	int flag;
+	int contador = 0;
+	int acum = 0;
+	flag = -1;
+
+	for(int i=0; i<len; i++)
+	{
+		if(list[i].isEmpty==FALSE)
+		{
+			acum += list[i].salary;
+			contador++;
+			flag = 0;
+		}
+	}
+	*acumulador = acum;
+	*promedio = (float)acum / contador;
+
+	return flag;
+}
+int salariosMayorPromedio(Employee* list, int len, float promedio)
+{
+	int flag;
+	flag = -1;
+
+	printf("ID \t Nombre \t Apellido \t Salario \t Sector\n");
+	for(int i=0; i<len-1; i++)
+	{
+		for(int j=i+1; j<len; j++)
+		{
+			if(list[i].isEmpty==FALSE && list[i].salary>promedio)
+			{
+				validarSector(list, len);
+				mostrarUnEmpleado(list[i]);
+				flag = 0;
+				break;
+			}
+		}
+	}
+
+	return flag;
+}
+int validarEjecucion(Employee* list, int len)
+{
+	int flag;
+	flag = -1;
+
+	for(int i=0; i<len; i++)
+	{
+		if(list[i].isEmpty==FALSE)
+		{
+			flag = 0;
+		}
+	}
+
+	return flag;
+}
+void harcodearEmpleado(Employee lista[], int id, char nombre[], char apellido[], float salario, int sector)
+{
+
+		lista[id].isEmpty = 1;
+		lista[id].id = id;
+		strcpy(lista[id].name, nombre);
+		strcpy(lista[id].lastName, apellido);
+		lista[id].salary = salario;
+		lista[id].sector = sector;
 }

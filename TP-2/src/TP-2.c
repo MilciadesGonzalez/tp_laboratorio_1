@@ -10,23 +10,28 @@
 #include <stdlib.h>
 #include <string.h>
 #include "ArrayEmployees.h"
-#include "Biblioteca.h"
+#include "inputs.h"
 
-#define LEN 3
+#define LEN 1000
 
 int main(void) {
 	setbuf(stdout,NULL);
 
 	int opcion;
-	int opcionSubMenu;
+	int opcionInforme;
+	float sumaSalarios;
+	float promedio;
 	Employee nominaEmpleados[LEN];
 	int contId = 0;
-	int id;
 
 	if(initEmployees(nominaEmpleados, LEN)==-1)
 	{
 		printf("Error al inicializar array.");
 	}
+
+	harcodearEmpleado(nominaEmpleados, 1, "milciades", "gonzalez", 100, 1);
+	harcodearEmpleado(nominaEmpleados, 2, "daiana", "arias", 50, 4);
+	harcodearEmpleado(nominaEmpleados, 3, "pepe", "aguilar", 50, 2);
 
 	do{
 		opcion = MenuPrincipal();
@@ -41,65 +46,41 @@ int main(void) {
 					printf("\n");
 			break;
 			case 2:
-					if(validarArray(nominaEmpleados, LEN)==0)
+					if(modificarEmpleado(nominaEmpleados, LEN)==-1)
 					{
-						printEmployees(nominaEmpleados, LEN);
-						id = pedirEntero("Ingrese ID del empleado a modificar: ");
-						if(findEmployeeById(nominaEmpleados, LEN, id)==0)
-						{
-							opcionSubMenu = subMenus();
-							if(modificarEmpleado(nominaEmpleados, LEN, opcionSubMenu, id)==-1)
-							{
-								printf("No se modificó empleado.\n");
-							}
-						}
-						else
-						{
-							printf("No se encontró empleado.\n");
-						}
-					}
-					else
-					{
-						printf("No hay datos para modificar, debe ingresar al menos un empleado.\n");
+						printf("No se encontró empleado para modificar.\n");
 					}
 					printf("\n");
 			break;
 			case 3:
-					if(validarArray(nominaEmpleados, LEN)==0)
+					if(removeEmployee(nominaEmpleados, LEN)==-1)
 					{
-						printEmployees(nominaEmpleados, LEN);
-						id = pedirEntero("Ingrese ID del empleado a eliminar: ");
-						if(findEmployeeById(nominaEmpleados, LEN, id)==0)
-						{
-							if(removeEmployee(nominaEmpleados, LEN, id)==0)
-							{
-								printf("Empleado eliminado exitosamente.\n");
-							}
-							else
-							{
-								printf("No se eliminó empleado.\n");
-							}
-						}
-						else
-						{
-							printf("No se encontró empleado.\n");
-						}
-					}
-					else
-					{
-						printf("No hay datos para eliminar, debe ingresar al menos un empleado.\n");
+						printf("No se encontró empleado para eliminar.\n");
 					}
 					printf("\n");
 			break;
 			case 4:
-				if(validarArray(nominaEmpleados, LEN)==0)
-				{
-					printEmployees(nominaEmpleados, LEN);
-				}
-				else
-				{
-					printf("No hay datos para mostrar, debe ingresar al menos un empleado.\n");
-				}
+					if(validarEjecucion(nominaEmpleados, LEN)==0)
+					{
+						opcionInforme = menuInformar();
+						if(opcionInforme==1)
+						{
+							sortEmployees(nominaEmpleados, LEN);
+							printEmployees(nominaEmpleados, LEN);
+						}
+						else if(opcionInforme==2)
+											{
+							calculos(nominaEmpleados, LEN, &promedio, &sumaSalarios);
+							printf("El total de los salarios es: %.2f\n", sumaSalarios);
+							printf("El promedio de los salarios es: %.2f\n", promedio);
+							printf("Los empleados con salarios mayores al promedio son:\n");
+							salariosMayorPromedio(nominaEmpleados, LEN, promedio);
+						}
+					}
+					else
+					{
+						printf("No hay reportes para mostrar.\n");
+					}
 					printf("\n");
 			break;
 			case 5:

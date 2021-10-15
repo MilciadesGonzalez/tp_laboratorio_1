@@ -17,6 +17,7 @@ struct
 	char lastName[51];
 	float salary;
 	int sector;
+	char descripcionSector[51];
 	int isEmpty;
 }typedef Employee;
 
@@ -43,8 +44,7 @@ int initEmployees(Employee* list, int len);
 free space] - (0) if Ok
 *
 */
-int addEmployee(Employee* list, int len, int);//, int id, char name[],char
-//lastName[],float salary,int sector);
+int addEmployee(Employee* list, int len, int);
 
 /** \brief find an Employee by Id en returns the index position in array.
 *
@@ -66,7 +66,7 @@ int findEmployeeById(Employee* list, int len,int id);
 find a employee] - (0) if Ok
 *
 */
-int removeEmployee(Employee* list, int len, int id);
+int removeEmployee(Employee* list, int len);
 
 /** \brief Sort the elements in the array of employees, the argument order
 indicate UP or DOWN order
@@ -77,7 +77,7 @@ indicate UP or DOWN order
 * \return int Return (-1) if Error [Invalid length or NULL pointer] - (0) if Ok
 *
 */
-int sortEmployees(Employee* list, int len, int order);
+int sortEmployees(Employee* list, int len);
 
 /** \brief print the content of employees array
 *
@@ -88,15 +88,69 @@ int sortEmployees(Employee* list, int len, int order);
 */
 int printEmployees(Employee* list, int length);
 
+/// @fn void mostrarUnEmpleado(Employee)
+/// @brief Recibe lista de empleado y muestra un elemento.
+/// @param list
 void mostrarUnEmpleado(Employee list);
 
+/// @fn int validarArray(Employee*, int)
+/// @brief Recibe lista de empleados y validapor descripcion de sector.
+/// @param list
+/// @param len
+/// @return Retorna 0 si se pudo o -1 caso contrario.
 int validarArray(Employee* list, int len);
 
+/// @fn int subMenus()
+/// @brief Muestra menu de descripcion de sector.
+/// @return Retorna 0 si se pudo o -1 caso contrario.
 int subMenus();
 
-int modificarEmpleado(Employee* list, int len, int op, int opId);
+/// @fn int modificarEmpleado(Employee*, int)
+/// @brief Recibe lista de empleados y ejecuta la modificacion desus campos.
+/// @param list
+/// @param len
+/// @return Retorna 0 si se pudo o -1 caso contrario.
+int modificarEmpleado(Employee* list, int len);
 
+/// @fn int validarSector(Employee*, int)
+/// @brief Recibe lista de empleados y valida el sector.
+/// @param list
+/// @param len
+/// @return Retorna 0 si se pudo o -1 caso contrario.
+int validarSector(Employee* list, int len);
 
+/// @fn int calculos(Employee*, int, float*, float*)
+/// @brief Recibe lista de empleados ejecuta la suma de  los salarios, el promedio y lo retorna por punteros.
+/// @param list
+/// @param len
+/// @param promedio
+/// @param acumulador
+/// @return Retorna 0 si se pudo o -1 caso contrario.
+int calculos(Employee* list, int len, float* promedio, float* acumulador);
 
+/// @fn int salariosMayorPromedio(Employee*, int, float)
+/// @brief Recibe lista de empleados y promedio de salarios. busca los salarios que superen el promedio y lo imprime.
+/// @param list
+/// @param len
+/// @param promedio
+/// @return Retorna 0 si se pudo o -1 caso contrario.
+int salariosMayorPromedio(Employee* list, int len, float promedio);
+
+/// @fn int validarEjecucion(Employee*, int)
+/// @brief
+/// @param list
+/// @param len
+/// @return
+int validarEjecucion(Employee* list, int len);
+
+/// @fn void harcodearEmpleado(Employee[], int, char[], char[], float, int)
+/// @brief
+/// @param lista
+/// @param id
+/// @param nombre
+/// @param apellido
+/// @param salario
+/// @param sector
+void harcodearEmpleado(Employee lista[], int id, char nombre[], char apellido[], float salario, int sector);
 
 #endif /* ARRAYEMPLOYEES_H_ */
